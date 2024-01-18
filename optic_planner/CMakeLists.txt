@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project (optic_planner)
 
-find_package(ament_cmake REQUIRED)
-
 
 set( CMAKE_MODULE_PATH    ${CMAKE_MODULE_PATH}
                           ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
@@ -12,18 +10,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 find_package(Cgl)
 find_package(Cbc)
 
-set(dependencies
-    rclcpp
+set(DEPS
+    roscpp
 )
+find_package(catkin2 REQUIRED ${DEPS})
 
 set(optic_SOURCE_DIR src/optic)
 set(parsePDDL_SOURCE_DIR src/parsing)
 set(val_SOURCE_DIR src/validate)
 
+catkin_package(
+  INCLUDE_DIRS ${optic_SOURCE_DIR} ${val_SOURCE_DIR} ${parsePDDL_SOURCE_DIR}
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS ${DEPS}
+  DEPENDS
+)
+
 include_directories(
-  ${optic_SOURCE_DIR}
-  ${val_SOURCE_DIR}
-  ${parsePDDL_SOURCE_DIR}
+  ${catkin_INCLUDE_DIRS}
+  ${optic_SOURCE_DIR} ${val_SOURCE_DIR} ${parsePDDL_SOURCE_DIR}
 )
 
 find_program(BISON_EXECUTABLE bison)
@@ -89,9 +94,9 @@ target_link_libraries(Inst ParsePDDL)
 
 
 install(TARGETS ParsePDDL
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 set(optic_build_srcs
@@ -127,12 +132,7 @@ target_link_libraries(optic_planner
 )
 
 install(TARGETS optic_planner opticCommon ParsePDDL Inst
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-ament_export_include_directories(include)
-ament_export_libraries(opticCommon ParsePDDL Inst)
-ament_export_dependencies(${dependencies})
-ament_package()
