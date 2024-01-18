@@ -89,6 +89,7 @@ set(libInst_SRCS
 )
 
 add_library(Inst SHARED ${libInst_SRCS})
+set_property(TARGET Inst PROPERTY ENABLE_EXPORTS ON)
 
 target_link_libraries(Inst ParsePDDL)
 
