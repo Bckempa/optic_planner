@@ -74,7 +74,7 @@ set(libParsePDDL_SRCS
       ${parsePDDL_SOURCE_DIR}/DebugWriteController.cpp
 )
 
-add_library(ParsePDDL SHARED ${libParsePDDL_SRCS})
+add_library(ParsePDDLOptic SHARED ${libParsePDDL_SRCS})
 
 set(libInst_SRCS
       ${val_SOURCE_DIR}/SimpleEval.cpp
@@ -91,10 +91,10 @@ set(libInst_SRCS
 add_library(Inst SHARED ${libInst_SRCS})
 set_property(TARGET Inst PROPERTY ENABLE_EXPORTS ON)
 
-target_link_libraries(Inst ParsePDDL)
+target_link_libraries(Inst ParsePDDLOptic)
 
 
-install(TARGETS ParsePDDL
+install(TARGETS ParsePDDLOptic
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -124,7 +124,7 @@ set(optic_build_srcs
     )
 
 add_library(opticCommon SHARED ${optic_build_srcs})
-target_link_libraries(opticCommon ParsePDDL Inst ${CBC_LIBRARIES})
+target_link_libraries(opticCommon ParsePDDLOptic Inst ${CBC_LIBRARIES})
 
 ADD_EXECUTABLE(optic_planner ${optic_SOURCE_DIR}/opticMain.cpp)
 target_link_libraries(optic_planner
@@ -132,7 +132,7 @@ target_link_libraries(optic_planner
   ${CGL_LIBRARIES}
 )
 
-install(TARGETS optic_planner opticCommon ParsePDDL Inst
+install(TARGETS optic_planner opticCommon ParsePDDLOptic Inst
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
