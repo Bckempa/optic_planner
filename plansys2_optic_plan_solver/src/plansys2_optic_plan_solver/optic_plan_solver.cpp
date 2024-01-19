@@ -54,7 +54,7 @@ OPTICPlanSolver::getPlan(
   std::string extra_params;
   lc_node_->getBaseNode().getParam(parameter_name_, extra_params);
   system(
-    ("ros2 run optic_planner optic_planner " + extra_params +
+    ("rosrun optic_planner optic_planner " + extra_params +
     " /tmp/" + node_namespace + "/domain.pddl /tmp/" + node_namespace +
     "/problem.pddl > /tmp/" + node_namespace + "/plan").c_str());
 
