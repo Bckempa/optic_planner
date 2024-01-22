@@ -88,10 +88,10 @@ set(libInst_SRCS
       ${val_SOURCE_DIR}/TypeStripWC.cpp
 )
 
-add_library(Inst SHARED ${libInst_SRCS})
-set_property(TARGET Inst PROPERTY ENABLE_EXPORTS ON)
+add_library(InstOptic SHARED ${libInst_SRCS})
+set_property(TARGET InstOptic PROPERTY ENABLE_EXPORTS ON)
 
-target_link_libraries(Inst ParsePDDLOptic)
+target_link_libraries(InstOptic ParsePDDLOptic)
 
 
 install(TARGETS ParsePDDLOptic
@@ -124,7 +124,7 @@ set(optic_build_srcs
     )
 
 add_library(opticCommon SHARED ${optic_build_srcs})
-target_link_libraries(opticCommon ParsePDDLOptic Inst ${CBC_LIBRARIES})
+target_link_libraries(opticCommon ParsePDDLOptic InstOptic ${CBC_LIBRARIES})
 
 ADD_EXECUTABLE(optic_planner ${optic_SOURCE_DIR}/opticMain.cpp)
 target_link_libraries(optic_planner
@@ -132,7 +132,7 @@ target_link_libraries(optic_planner
   ${CGL_LIBRARIES}
 )
 
-install(TARGETS optic_planner opticCommon ParsePDDLOptic Inst
+install(TARGETS optic_planner opticCommon ParsePDDLOptic InstOptic
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
