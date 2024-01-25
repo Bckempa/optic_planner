@@ -21,7 +21,8 @@ OPTICPlanSolver::OPTICPlanSolver()
 void OPTICPlanSolver::configure(std::shared_ptr<ros::lifecycle::ManagedNode> & lc_node,
   const std::string & plugin_name)
 {
-  parameter_name_ = plugin_name + "/arguments";
+  parameter_name_ = "planner/" + plugin_name + "/arguments";
+  command_parameter_name_ = "planner/" + plugin_name + "/command";
   lc_node_ = lc_node;
   // Backport: No need to declare parameters in ROS1
   //lc_node_->declare_parameter<std::string>(parameter_name_, "");
@@ -51,10 +52,12 @@ OPTICPlanSolver::getPlan(
   problem_out << problem;
   problem_out.close();
 
-  std::string extra_params;
-  lc_node_->getBaseNode().getParam(parameter_name_, extra_params);
+  std::string command, extra_params;
+  lc_node_->getBaseNode().param<std::string>(node_namespace + "/" + command_parameter_name_,
+		                             command, "rosrun optic_planner optic_planner");
+  lc_node_->getBaseNode().getParam(node_namespace + "/" + parameter_name_, extra_params);
   system(
-    ("rosrun optic_planner optic_planner " + extra_params +
+    (command + " " + extra_params +
     " /tmp/" + node_namespace + "/domain.pddl /tmp/" + node_namespace +
     "/problem.pddl > /tmp/" + node_namespace + "/plan").c_str());
 

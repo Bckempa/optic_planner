@@ -13,7 +13,7 @@ namespace plansys2
 class OPTICPlanSolver : public PlanSolverBase
 {
 private:
-  std::string parameter_name_;
+  std::string command_parameter_name_, parameter_name_;
   std::shared_ptr<ros::lifecycle::ManagedNode> lc_node_;
 
 public:
