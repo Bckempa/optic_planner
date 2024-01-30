@@ -56,6 +56,7 @@ OPTICPlanSolver::getPlan(
   lc_node_->getBaseNode().param<std::string>(node_namespace + "/" + command_parameter_name_,
 		                             command, "rosrun optic_planner optic_planner");
   lc_node_->getBaseNode().getParam(node_namespace + "/" + parameter_name_, extra_params);
+
   system(
     (command + " " + extra_params +
     " /tmp/" + node_namespace + "/domain.pddl /tmp/" + node_namespace +
@@ -71,7 +72,7 @@ OPTICPlanSolver::getPlan(
         if (line.find("Solution Found") != std::string::npos) {
           solution = true;
         }
-      } else if (line.front() != ';') {
+      } else if (!line.empty() && line.front() != ';') {
         plansys2_msgs::PlanItem item;
         size_t colon_pos = line.find(":");
         size_t colon_par = line.find(")");
